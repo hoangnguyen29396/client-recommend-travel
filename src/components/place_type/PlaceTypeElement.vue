@@ -7,7 +7,7 @@
     <td>
       <button type="button" @click="updatePlaceType(placeType)" class="btn btn-success edit" title="Save"><i class="fa fa-save"></i></button>
       <button type="button" @click="cancelEditPlaceType(placeType)" class="btn btn-warning edit" title="Cancel"><i class="fa fa-backward"></i></button>
-      <router-link class="btn btn-success js-sweetalert view"  :to="{ name: 'viewPlaceCategories', params: { placeTypeId: placeType.id }}" title="Place Categories"><i class="fa fa-eye"></i></router-link>
+      <router-link class="btn btn-success js-sweetalert view"  :to="{ name: 'viewPlaceCategories', params: { placeTypeId: placeType.id }}" title="Place Categories"><i class="fa fa-cube"></i></router-link>
       <button type="button" class="btn btn-danger js-sweetalert view" title="Delete"><i class="fa fa-trash-o"></i></button>
     </td>
   </tr>

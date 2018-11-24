@@ -4,7 +4,7 @@
       <div class="navbar-brand">
         <a href="index.html">
         <img src="/static/assets/images/logo-icon.svg" alt="Mplify Logo" class="img-responsive logo">
-        <span class="name">mplify</span>
+        <span class="name">Manage</span>
         </a>
       </div>
       <div class="navbar-right">
