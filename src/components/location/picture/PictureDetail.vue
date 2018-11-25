@@ -13,7 +13,7 @@
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
-              <button class="btn btn-primary" @click="createPicture({file, locationId})" type="submit">Add</button>
+              <button class="btn btn-primary" @click="createPicture(locationId, file)" type="submit">Add</button>
             </div>
           </div>
           <div class="table-responsive">
@@ -36,8 +36,8 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
 import PictureElement from './PictureElement'
+import PictureService from '@/services/picture'
 
 export default {
   props: {
@@ -50,23 +50,50 @@ export default {
   },
   data () {
     return {
-      file: ''
+      file: '',
+      pictures: []
     }
   },
   computed: {
-    ...mapState('picture', [
-      'pictures'
-    ])
   },
-  mounted () {
+  created () {
     this.fetchPictures(this.locationId)
   },
   methods: {
-    ...mapActions('picture', [
-      'fetchPictures',
-      'createPicture',
-      'deletePicture'
-    ]),
+    fetchPictures (locationId) {
+      const service = new PictureService()
+      service.fetchPictures(locationId)
+        .then(response => {
+          this.pictures = response.data.data
+        })
+        .catch(() => {
+          alert('error')
+        })
+    },
+    createPicture (locationId, file) {
+      const service = new PictureService()
+      let formData = new FormData()
+      formData.append('file', file)
+      formData.append('idLocation', locationId)
+      service.createPicture(formData)
+        .then(response => {
+          this.pictures.unshift(response.data.data)
+        })
+        .catch(() => {
+          alert('error')
+        })
+    },
+    deletePicture (picture) {
+      const service = new PictureService()
+      service.deletePicture(picture)
+        .then(() => {
+          let pictureIndex = this.pictures.findIndex(_picture => _picture.id === picture.id)
+          this.pictures.splice(pictureIndex, 1)
+        })
+        .catch(() => {
+          alert('error')
+        })
+    },
     handleFileUpload () {
       this.file = this.$refs.file.files[0]
     }

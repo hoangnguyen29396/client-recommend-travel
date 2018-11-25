@@ -23,22 +23,9 @@
                   <img class="rounded-circle" src="/static/assets/images/user-small.png" width="30" alt="">
                   </a>
                   <div class="dropdown-menu animated flipInY user-profile">
-                    <div class="d-flex p-3 align-items-center">
-                      <div class="drop-left m-r-10">
-                        <img src="/static/assets/images/user-small.png" class="rounded" width="50" alt="">
-                      </div>
-                      <div class="drop-right">
-                        <h4>Samuel Morriss</h4>
-                        <p class="user-name">samuelmorris@info.com</p>
-                      </div>
-                    </div>
                     <div class="m-t-10 p-3 drop-list">
                       <ul class="list-unstyled">
-                        <li><a href="page-profile.html"><i class="icon-user"></i>My Profile</a></li>
-                        <li><a href="app-inbox.html"><i class="icon-envelope-open"></i>Messages</a></li>
-                        <li><a href="javascript:void(0);"><i class="icon-settings"></i>Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="page-login.html"><i class="icon-power"></i>Logout</a></li>
+                        <li><a href="#" @click.prevent="logout"><i class="icon-power"></i>Logout</a></li>
                       </ul>
                     </div>
                   </div>
@@ -51,3 +38,16 @@
     </div>
   </nav>
 </template>
+
+<script>
+import {removeAuthToken} from '@/services/auth'
+
+export default {
+  methods: {
+    logout () {
+      removeAuthToken()
+      this.$router.push({name: 'login'})
+    }
+  }
+}
+</script>

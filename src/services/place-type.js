@@ -1,6 +1,9 @@
 import BaseSerive from './base'
 
 export default class PlaceTypeService extends BaseSerive {
+  constructor (resource = 'place-types') {
+    super(resource)
+  }
   fetchPlaceTypes () {
     return new Promise((resolve, reject) => {
       this.request().get(`/place-types`)

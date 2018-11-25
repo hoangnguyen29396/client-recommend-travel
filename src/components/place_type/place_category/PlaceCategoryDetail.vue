@@ -6,10 +6,18 @@
           <h2>{{ placeType.name }}</h2>
         </div>
         <div class="body">
+          <div class="error-message">
+            <p v-for="error in listError" :key="error.message">
+              {{ error.message }}
+            </p>
+          </div>
           <div class="row clearfix">
             <div class="col-lg-4 col-md-6 col-sm-12">
               <div class="form-group">
-                <input v-model="placeCategory.name" type="text" class="form-control" placeholder="Enter place category">
+                <input v-model="placeCategory.name"
+                  type="text" class="form-control"
+                  placeholder="Enter place category"
+                  >
               </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12">
@@ -26,7 +34,8 @@
               </thead>
               <tbody>
                 <place-category-element v-for="placeCategory in placeCategories" :key="placeCategory.id" :placeCategory="placeCategory"
-                @update-place-category="updatePlaceCategory"/>
+                @update-place-category="updatePlaceCategory"
+                @delete-place-category="deletePlaceCategory"/>
               </tbody>
             </table>
           </div>
@@ -57,13 +66,14 @@ export default {
         name: '',
         idPlaceType: 0
       },
-      placeType: {}
+      placeType: {},
+      listError: []
     }
   },
   computed: {
 
   },
-  mounted () {
+  created () {
     this.fetchPlaceType(this.placeTypeId)
     this.fetchPlaceCategories(this.placeTypeId)
   },
@@ -74,7 +84,7 @@ export default {
         .then(response => {
           this.placeCategories = response.data.data
         })
-        .catch(() => {
+        .catch(errors => {
           alert('error')
         })
     },
@@ -84,7 +94,7 @@ export default {
         .then(response => {
           this.placeType = response.data.data
         })
-        .catch(() => {
+        .catch(errors => {
           alert('error')
         })
     },
@@ -97,8 +107,8 @@ export default {
           this.placeCategory.name = ''
           this.placeCategory.idPlaceType = 0
         })
-        .catch(() => {
-          alert('error')
+        .catch(errors => {
+          this.listError = errors.response.data.data
         })
     },
     updatePlaceCategory (placeCategory) {
@@ -109,10 +119,17 @@ export default {
           let placeCategoryIndex = this.placeCategories.findIndex(_placeCategory => _placeCategory.id === placeCategory.id)
           this.placeCategories.splice(placeCategoryIndex, 1)
           this.placeCategories.unshift(placeCategory)
+          this.listError = []
         })
-        .catch(() => {
-          alert('error')
+        .catch(errors => {
+          this.listError = errors.response.data.data
         })
+    },
+    deletePlaceCategory (placeCategory) {
+      let index = this.placeCategories.findIndex(_placeCategory =>
+        _placeCategory.id === placeCategory.id
+      )
+      this.placeCategories.splice(index, 1)
     }
   }
 }
