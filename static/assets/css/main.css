@@ -11,3 +11,13 @@
     .editing .view {
       display: none;
     }
+.delete-button {
+  position: absolute;
+  right: 200px
+}
+.action-list {
+  margin-bottom: 20px
+}
+.error-message {
+  color: red
+}

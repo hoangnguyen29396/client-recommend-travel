@@ -3,65 +3,67 @@
     <div class="col-lg-12">
       <div class="card">
         <div class="header">
-          <h2>Location</h2>
+          <h2>Users</h2>
         </div>
         <div class="body">
           <div class="row clearfix">
             <div class="col-lg-4 col-m-6 col-sm-12 mb-4">
-              <router-link class="btn btn-primary js-sweetalert" :to="{name: 'changeLocation'}" title="Add location">Add</router-link>
+              <router-link class="btn btn-primary js-sweetalert" :to="{name: 'addUser'}" title="Add user">Add</router-link>
             </div>
           </div>
           <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table m-b-0">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>Introduction</th>
-                  <th>Place Category</th>
-                  <th>Address</th>
+                  <th>User</th>
+                  <th>Fullname</th>
+                  <th>Role</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <location-element v-for="location in locations" :key="location.id"
-                  :location="location"/>
+                <user-element v-for="user in users"
+                  :key="user.id" :user="user" />
               </tbody>
             </table>
           </div>
         </div>
         <pagination :total-pages="sumPage" :current-page="currentPage"
-          :maxVisibleButtons="4" @pagechanged="onPageChange" />
+          :maxVisibleButtons="4" @pagechanged="onPageChange"/>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import Pagination from '../share/Pagination.vue'
-import LocationElement from './LocationElement.vue'
-import LocationService from '@/services/location'
+import UserElement from './UserElement'
+import UserService from '@/services/user'
 
 export default {
   components: {
     Pagination,
-    LocationElement
+    UserElement
   },
   data () {
     return {
       currentPage: 1,
-      locations: [],
-      sumPage: 0
+      sumPage: 0,
+      users: []
     }
   },
-  created () {
-    this.fetchLocations(this.currentPage)
+  computed: {
+  },
+  mounted () {
+    this.fetchUsers(this.currentPage)
   },
   methods: {
-    fetchLocations (currentPage) {
-      const service = new LocationService()
-      service.fetchLocations(currentPage)
+    fetchUsers (currentPage) {
+      const service = new UserService()
+      service.fetchUsers(currentPage)
         .then(response => {
+          this.users = response.data.data.usersProfileDTOList
           this.sumPage = response.data.data.sumPage
-          this.locations = response.data.data.listLocationProfieDTO
         })
         .catch(() => {
           alert('error')
@@ -69,7 +71,7 @@ export default {
     },
     onPageChange (page) {
       this.currentPage = page
-      this.fetchLocations(this.currentPage)
+      this.fetchUsers(this.currentPage)
     }
   }
 }
