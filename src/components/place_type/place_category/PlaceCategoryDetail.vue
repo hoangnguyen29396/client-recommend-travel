@@ -11,7 +11,7 @@
               {{ error.message }}
             </p>
           </div>
-          <div class="row clearfix">
+          <div v-show="isAction('ADD_PLACECATEGORY')" class="row clearfix">
             <div class="col-lg-4 col-md-6 col-sm-12">
               <div class="form-group">
                 <input v-model="placeCategory.name"
@@ -49,6 +49,7 @@
 import PlaceCategoryElement from './PlaceCategoryElement'
 import PlaceCategoryService from '@/services/place-category'
 import PlaceTypeService from '@/services/place-type'
+import { isAction } from '@/services/auth'
 
 export default {
   props: {
@@ -75,7 +76,9 @@ export default {
   },
   created () {
     this.fetchPlaceType(this.placeTypeId)
-    this.fetchPlaceCategories(this.placeTypeId)
+    if (isAction('VIEW_PLACECATEGORY')) {
+      this.fetchPlaceCategories(this.placeTypeId)
+    }
   },
   methods: {
     fetchPlaceCategories (placeTypeId) {
@@ -85,7 +88,7 @@ export default {
           this.placeCategories = response.data.data
         })
         .catch(errors => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     fetchPlaceType (placeTypeId) {
@@ -95,7 +98,7 @@ export default {
           this.placeType = response.data.data
         })
         .catch(errors => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     createPlaceCategory (placeCategory, placeTypeId) {
@@ -105,31 +108,38 @@ export default {
         .then(response => {
           this.placeCategories.unshift(response.data.data)
           this.placeCategory.name = ''
-          this.placeCategory.idPlaceType = 0
+          this.$validator.reset()
         })
         .catch(errors => {
           this.listError = errors.response.data.data
         })
     },
     updatePlaceCategory (placeCategory) {
-      const service = new PlaceCategoryService()
-      service.updatePlaceCategory(placeCategory)
-        .then(response => {
-          placeCategory = response.data.data
-          let placeCategoryIndex = this.placeCategories.findIndex(_placeCategory => _placeCategory.id === placeCategory.id)
-          this.placeCategories.splice(placeCategoryIndex, 1)
-          this.placeCategories.unshift(placeCategory)
-          this.listError = []
-        })
-        .catch(errors => {
-          this.listError = errors.response.data.data
-        })
+      if (isAction('UPDATE_PLACETYPE')) {
+        const service = new PlaceCategoryService()
+        service.updatePlaceCategory(placeCategory)
+          .then(response => {
+            placeCategory = response.data.data
+            let placeCategoryIndex = this.placeCategories.findIndex(_placeCategory => _placeCategory.id === placeCategory.id)
+            this.placeCategories.splice(placeCategoryIndex, 1)
+            this.placeCategories.unshift(placeCategory)
+            this.listError = []
+          })
+          .catch(errors => {
+            this.listError = errors.response.data.data
+          })
+      } else {
+        alert('Something is wrong, please refresh again')
+      }
     },
     deletePlaceCategory (placeCategory) {
       let index = this.placeCategories.findIndex(_placeCategory =>
         _placeCategory.id === placeCategory.id
       )
       this.placeCategories.splice(index, 1)
+    },
+    isAction (actionName) {
+      return isAction(actionName)
     }
   }
 }

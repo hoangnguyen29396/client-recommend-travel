@@ -49,7 +49,8 @@
                 <label for="food">Place Type</label>
                 <br>
                 <select class="form-control"
-                  v-model="location.idPlaceType">
+                  v-model="location.idPlaceType"
+                  @change="changePlaceType">
                   <option value="">Choose place type</option>
                   <option v-for="placeType in placeTypes"
                     :key="placeType.id"
@@ -180,6 +181,9 @@ export default {
     }
   },
   methods: {
+    changePlaceType () {
+      this.location.idPlaceCategory = ''
+    },
     fetchLocation (locationId) {
       const service = new LocationService(`/api/location`)
       service.show(locationId)
@@ -187,7 +191,7 @@ export default {
           this.location = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     fetchPlaceCategories () {
@@ -197,7 +201,7 @@ export default {
           this.placeCategories = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     fetchPlaceTypes () {
@@ -207,7 +211,7 @@ export default {
           this.placeTypes = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     updateLocation (location) {

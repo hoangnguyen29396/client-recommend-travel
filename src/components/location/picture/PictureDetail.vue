@@ -67,7 +67,7 @@ export default {
           this.pictures = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     createPicture (locationId, file) {
@@ -80,7 +80,7 @@ export default {
           this.pictures.unshift(response.data.data)
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     deletePicture (picture) {
@@ -91,7 +91,7 @@ export default {
           this.pictures.splice(pictureIndex, 1)
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     handleFileUpload () {

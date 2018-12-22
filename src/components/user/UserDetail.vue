@@ -66,7 +66,7 @@ export default {
           this.sumPage = response.data.data.sumPage
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     onPageChange (page) {

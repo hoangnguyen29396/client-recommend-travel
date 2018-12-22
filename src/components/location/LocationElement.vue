@@ -6,7 +6,8 @@
     <td>{{ location.address }}</td>
     <td>
       <router-link class="btn btn-success js-sweetalert"  :to="{ name: 'viewPictures', params: { locationId: location.id }}" title="Pictures"><i class="fa fa-image"></i></router-link>
-      <router-link class="btn btn-success js-sweetalert"  :to="{ name: 'editLocation', params: { locationId: location.id }}" title="Edit"><i class="fa fa-edit"></i></router-link>
+      <router-link class="btn btn-success js-sweetalert"  :to="{ name: 'editLocation', params: { locationId: location.id }}" title="Edit"
+        v-show="isAction('UPDATE_LOCATION')"><i class="fa fa-edit"></i></router-link>
       <router-link class="btn btn-success js-sweetalert"  :to="{ name: 'viewEvaluation', params: { locationId: location.id }}" title="Evaluation"><i class="fa fa-star"></i></router-link>
       <button type="button" class="btn btn-success js-sweetalert"
         title="deactivate"
@@ -25,6 +26,7 @@
 </template>
 <script>
 import LocationService from '@/services/location'
+import { isAction } from '@/services/auth'
 
 export default {
   props: ['location'],
@@ -40,8 +42,11 @@ export default {
           }
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
+    },
+    isAction (actionName) {
+      return isAction(actionName)
     }
   }
 }

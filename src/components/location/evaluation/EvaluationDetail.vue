@@ -67,7 +67,7 @@ export default {
           this.sumPage = response.data.data.sumPage
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     deleteEvaluation (evaluation) {
@@ -78,7 +78,7 @@ export default {
           this.evaluations.splice(evaluationIndex, 1)
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     onPageChange (page) {

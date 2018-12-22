@@ -90,7 +90,7 @@ export default {
           this.placeTypes = response.data.data
         })
         .catch(errors => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     createPlaceType (placeType) {
@@ -101,6 +101,7 @@ export default {
             .then(response => {
               this.placeTypes.unshift(response.data.data)
               this.placeType.name = ''
+              this.$validator.reset()
             })
             .catch(errors => {
               this.listError = errors.response.data.data
@@ -109,18 +110,22 @@ export default {
       })
     },
     updatePlaceType (placeType) {
-      const service = new PlaceTypeService()
-      service.updatePlaceType(placeType)
-        .then(response => {
-          placeType = response.data.data
-          let placeTypeIndex = this.placeTypes.findIndex(_placeType => _placeType.id === placeType.id)
-          this.placeTypes.splice(placeTypeIndex, 1)
-          this.placeTypes.unshift(placeType)
-          this.listError = []
-        })
-        .catch(errors => {
-          this.listError = errors.response.data.data
-        })
+      if (isAction('UPDATE_PLACETYPE')) {
+        const service = new PlaceTypeService()
+        service.updatePlaceType(placeType)
+          .then(response => {
+            placeType = response.data.data
+            let placeTypeIndex = this.placeTypes.findIndex(_placeType => _placeType.id === placeType.id)
+            this.placeTypes.splice(placeTypeIndex, 1)
+            this.placeTypes.unshift(placeType)
+            this.listError = []
+          })
+          .catch(errors => {
+            this.listError = errors.response.data.data
+          })
+      } else {
+        alert('Something is wrong, please refresh again')
+      }
     },
     isAction (actionName) {
       return isAction(actionName)

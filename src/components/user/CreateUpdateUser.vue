@@ -6,6 +6,11 @@
           <h2>Change user</h2>
         </div>
         <div class="body">
+          <div class="error-message">
+            <p>
+              {{ errorMessage }}
+            </p>
+          </div>
           <div class="form-group">
             <div class="row">
               <div class="col-lg-6">
@@ -71,7 +76,8 @@ export default {
         phone: '',
         gender: ''
       },
-      isCreating: true
+      isCreating: true,
+      errorMessage: ''
     }
   },
   methods: {
@@ -82,7 +88,10 @@ export default {
           this.$router.push({name: 'viewUsers'})
         })
         .catch(errors => {
-          console.log(errors)
+          if (errors.response.data.result_code === 403) {
+            alert('You do not have access')
+          }
+          this.errorMessage = errors.response.data.result_message
         })
     }
   }

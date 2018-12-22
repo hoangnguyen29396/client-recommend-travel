@@ -28,7 +28,7 @@ export default {
           this.action.listAction.splice(permissionIndex, 1)
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     }
   }

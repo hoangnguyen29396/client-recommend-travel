@@ -94,7 +94,7 @@ export default {
           this.actions = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     fetchTables () {
@@ -104,7 +104,7 @@ export default {
           this.tables = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     fetchTableActions () {
@@ -114,7 +114,7 @@ export default {
           this.tableActions = response.data.data
         })
         .catch(() => {
-          alert('error')
+          alert('Something is wrong, please refresh again')
         })
     },
     createPermission () {
@@ -124,7 +124,7 @@ export default {
           this.fetchActions()
         })
         .catch(() => {
-          alert('alert')
+          alert('Something is wrong, please refresh again')
         })
     }
   }
